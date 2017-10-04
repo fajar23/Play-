@@ -1532,7 +1532,15 @@ void CPS2OS::sc_RemoveIntcHandler()
 	m_intcHandlerQueue.Unlink(id);
 	m_intcHandlers.Free(id);
 
-	m_ee.m_State.nGPR[SC_RETURN].nD0 = 0;
+	int32 handlerCount = 0;
+	for(const auto& handler : m_intcHandlers)
+	{
+		if(!handler) continue;
+		if(handler->cause != cause) continue;
+		handlerCount++;
+	}
+
+	m_ee.m_State.nGPR[SC_RETURN].nD0 = handlerCount;
 }
 
 //12
@@ -1589,7 +1597,15 @@ void CPS2OS::sc_RemoveDmacHandler()
 	m_dmacHandlerQueue.Unlink(id);
 	m_dmacHandlers.Free(id);
 
-	m_ee.m_State.nGPR[SC_RETURN].nD0 = 0;
+	int32 handlerCount = 0;
+	for(const auto& handler : m_dmacHandlers)
+	{
+		if(!handler) continue;
+		if(handler->channel != channel) continue;
+		handlerCount++;
+	}
+
+	m_ee.m_State.nGPR[SC_RETURN].nD0 = handlerCount;
 }
 
 //14
