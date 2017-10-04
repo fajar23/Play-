@@ -663,7 +663,7 @@ void CMainWindow::LoadELF(const char* sFilename)
 	try
 	{
 		os.BootFromFile(sFilename);
-#if !defined(_DEBUG) && !defined(DEBUGGER_INCLUDED)
+#ifndef DEBUGGER_INCLUDED
 		m_virtualMachine.Resume();
 #endif
 		m_lastOpenCommand = OpenCommandPtr(new CLoadElfOpenCommand(sFilename));
@@ -684,7 +684,7 @@ void CMainWindow::BootCDROM()
 	try
 	{
 		os.BootFromCDROM();
-#ifndef _DEBUG
+#ifndef DEBUGGER_INCLUDED
 		m_virtualMachine.Resume();
 #endif
 		m_lastOpenCommand = OpenCommandPtr(new CBootCdRomOpenCommand());
